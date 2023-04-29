@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-compare-app
+spec:
+  selector:
+    app: stock-compare-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8501
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-compare-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stock-compare-app
+  template:
+    metadata:
+      labels:
+        app: stock-compare-app
+    spec:
+      containers:
+      - name: stock-compare-app
+        image: stock-compare-app
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8501
